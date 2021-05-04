@@ -28,11 +28,13 @@
   },
   "homepage": "https://github.com/vilaboim/vuecloak#readme",
   "devDependencies": {
-    "keycloak-js": "^12.0.4",
     "rimraf": "^3.0.2",
     "rollup": "^2.45.2"
   },
   "files": [
     "dist"
-  ]
+  ],
+  "dependencies": {
+    "keycloak-js": "^12.0.4"
+  }
 }
