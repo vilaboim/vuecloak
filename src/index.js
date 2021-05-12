@@ -27,6 +27,10 @@ function init (config, options) {
     isFunction(options.onAuthRefreshError) && options.onAuthRefreshError(keycloak)
   }
 
+  keycloak.onTokenExpired = function () {
+    isFunction(options.onTokenExpired) && options.onTokenExpired(keycloak)
+  }
+
   keycloak
     .init(options.init)
     .then((authenticated) => {
