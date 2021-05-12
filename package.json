@@ -1,6 +1,6 @@
 {
   "name": "vuecloak",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "description": "A Keycloak plugin for Vue 3",
   "main": "dist/vuecloak.cjs.js",
   "module": "dist/vuecloak.esm-bundler.js",
