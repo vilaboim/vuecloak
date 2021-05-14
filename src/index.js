@@ -27,6 +27,10 @@ function init (config, options) {
     isFunction(options.onAuthRefreshError) && options.onAuthRefreshError(keycloak)
   }
 
+  keycloak.onAuthLogout = function () {
+    isFunction(options.onAuthLogout) && options.onAuthLogout(keycloak)
+  }
+
   keycloak.onTokenExpired = function () {
     isFunction(options.onTokenExpired) && options.onTokenExpired(keycloak)
   }
@@ -37,12 +41,10 @@ function init (config, options) {
       isFunction(options.onInitSuccess) &&
         options.onInitSuccess(authenticated)
     })
-    .catch((err) => {
-      const error = Error('Could not initialized keycloak-js adapter')
-
+    .catch((error) => {
       isFunction(options.onInitError)
-        ? options.onInitError(error, err)
-        : console.error(error, err)
+        ? options.onInitError(error)
+        : console.error(error)
     })
 
   return keycloak
@@ -51,21 +53,10 @@ function init (config, options) {
 let installed = false
 
 const Vuecloak = {
-  install: (app, _options) => {
+  install: (app, options) => {
     if (installed) return
 
     installed = true
-
-    const defaultOptions = {
-      init: {
-        onLoad: 'login-required',
-        checkLoginIframe: false
-      }
-    }
-    const options = {
-      ...defaultOptions,
-      ..._options
-    }
 
     const keycloak = init(options.config, options)
 
