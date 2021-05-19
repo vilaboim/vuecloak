@@ -1,4 +1,5 @@
 import Keycloak from 'keycloak-js'
+import { devtoolsPlugin } from './devtools'
 
 function isFunction (value) {
   return typeof value === 'function'
@@ -52,7 +53,7 @@ function init (config, options) {
 
 let installed = false
 
-const Vuecloak = {
+export const Vuecloak = {
   install: (app, options) => {
     if (installed) return
 
@@ -62,7 +63,8 @@ const Vuecloak = {
 
     app.config.globalProperties.$keycloak = keycloak
     app.provide('$keycloak', keycloak)
+
+    devtoolsPlugin(app, keycloak)
   }
 }
 
-export { Vuecloak }
