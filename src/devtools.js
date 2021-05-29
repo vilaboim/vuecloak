@@ -26,7 +26,7 @@ export function devtoolsPlugin (app, keycloak) {
 
         api.on.getInspectorTree(payload => {
           if (payload.inspectorId === INSPECTOR_ID) {
-            payload.rootNodes = [
+            const rootNodes = [
               {
                 id: 'properties',
                 label: 'Properties',
@@ -34,16 +34,21 @@ export function devtoolsPlugin (app, keycloak) {
                   id: property,
                   label: property
                 }))
-              },
-              {
+              }
+            ]
+
+            if (keycloak.authenticated) {
+              rootNodes.push({
                 id: 'methods',
                 label: 'Methods',
                 children: keycloakMethods.map((property) => ({
                   id: property,
                   label: property
                 }))
-              }
-            ]
+              })
+            }
+
+            payload.rootNodes = rootNodes
           }
         })
 
@@ -51,7 +56,7 @@ export function devtoolsPlugin (app, keycloak) {
           if (payload.inspectorId === INSPECTOR_ID) {
             const nodeId = payload.nodeId
 
-            if (keycloakMethods.includes(nodeId)) {
+            if (keycloak.authenticated && keycloakMethods.includes(nodeId)) {
               payload.state = {
                 [nodeId]: {
                   key: nodeId,
@@ -73,8 +78,6 @@ export function devtoolsPlugin (app, keycloak) {
       }
 
       isAlreadyInstalled = true
-
-      api.notifyComponentUpdate()
     }
   )
 }

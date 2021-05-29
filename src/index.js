@@ -64,7 +64,12 @@ export const Vuecloak = {
     app.config.globalProperties.$keycloak = keycloak
     app.provide('$keycloak', keycloak)
 
-    devtoolsPlugin(app, keycloak)
+    const IS_DEV = process.env.NODE_ENV === 'development'
+    const IS_CLIENT = typeof window !== 'undefined'
+
+    if (IS_DEV && IS_CLIENT) {
+      devtoolsPlugin(app, keycloak)
+    }
   }
 }
 
