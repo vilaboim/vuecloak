@@ -154,6 +154,6 @@ app
 
 Vuecloak uses the power of Vue Devtools to provide a great developer experience.
 
-![Vue devtools support](devtools.gif)
+![Vue devtools support](devtools.png)
 
 Only available in [Vue Devtools 6+](https://github.com/vuejs/vue-devtools/releases)
