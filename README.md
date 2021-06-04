@@ -63,6 +63,8 @@ Vuecloak allows you to listen to Keycloak [callback events](https://www.keycloak
 |`onInitSuccess`|Function(authenticated)|
 |`onInitError`|Function(error)|
 
+You can use this way:
+
 ```js
 app
   .use(Vuecloak, {
@@ -147,3 +149,11 @@ app
     onInitError (error) {...},
   })
 ```
+
+## Debug
+
+Vuecloak uses the power of Vue Devtools to provide a great developer experience.
+
+![Vue devtools support](devtools.gif)
+
+Only available in [Vue Devtools 6+](https://github.com/vuejs/vue-devtools/releases)
