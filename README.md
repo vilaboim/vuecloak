@@ -23,6 +23,8 @@ yarn add vuecloak
 It is mandatory to provide a config object containing your Keycloak **url**, **realm** and **clientId**.
 
 ```js
+import { Vuecloak } from 'vuecloak'
+
 app
   .use(Vuecloak, {
     config: {
