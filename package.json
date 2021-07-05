@@ -29,7 +29,7 @@
   "homepage": "https://github.com/vilaboim/vuecloak#readme",
   "devDependencies": {
     "rimraf": "^3.0.2",
-    "rollup": "^2.50.6"
+    "rollup": "^2.52.7"
   },
   "files": [
     "dist"
