@@ -7,6 +7,7 @@
   "browser": "dist/vuecloak.umd.js",
   "scripts": {
     "build": "rimraf dist && rollup -c rollup.config.js",
+    "lint": "eslint --ext .js --fix src/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -28,6 +29,9 @@
   },
   "homepage": "https://github.com/vilaboim/vuecloak#readme",
   "devDependencies": {
+    "eslint": "^7.32.0 || ^8.2.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.2",
     "rimraf": "^3.0.2",
     "rollup": "^2.52.7"
   },

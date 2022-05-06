@@ -1,75 +1,77 @@
-import Keycloak from 'keycloak-js'
-import { devtoolsPlugin } from './devtools'
+import Keycloak from 'keycloak-js';
+import devtoolsPlugin from './devtools';
 
-function isFunction (value) {
-  return typeof value === 'function'
+function isFunction(value) {
+  return typeof value === 'function';
 }
 
-function init (config, options) {
-  const keycloak = Keycloak(config)
+function init(config, options) {
+  const keycloak = Keycloak(config);
 
-  keycloak.onReady = function () {
-    isFunction(options.onReady) && options.onReady(keycloak)
-  }
+  keycloak.onReady = () => {
+    if (isFunction(options.onReady)) options.onReady(keycloak);
+  };
 
-  keycloak.onAuthSuccess = function () {
-    isFunction(options.onAuthSuccess) && options.onAuthSuccess(keycloak)
-  }
+  keycloak.onAuthSuccess = () => {
+    if (isFunction(options.onAuthSuccess)) options.onAuthSuccess(keycloak);
+  };
 
-  keycloak.onAuthError = function () {
-    isFunction(options.onAuthError) && options.onAuthError(keycloak)
-  }
+  keycloak.onAuthError = () => {
+    if (isFunction(options.onAuthError)) options.onAuthError(keycloak);
+  };
 
-  keycloak.onAuthRefreshSuccess = function () {
-    isFunction(options.onAuthRefreshSuccess) && options.onAuthRefreshSuccess(keycloak)
-  }
+  keycloak.onAuthRefreshSuccess = () => {
+    if (isFunction(options.onAuthRefreshSuccess)) options.onAuthRefreshSuccess(keycloak);
+  };
 
-  keycloak.onAuthRefreshError = function () {
-    isFunction(options.onAuthRefreshError) && options.onAuthRefreshError(keycloak)
-  }
+  keycloak.onAuthRefreshError = () => {
+    if (isFunction(options.onAuthRefreshError)) options.onAuthRefreshError(keycloak);
+  };
 
-  keycloak.onAuthLogout = function () {
-    isFunction(options.onAuthLogout) && options.onAuthLogout(keycloak)
-  }
+  keycloak.onAuthLogout = () => {
+    if (isFunction(options.onAuthLogout)) options.onAuthLogout(keycloak);
+  };
 
-  keycloak.onTokenExpired = function () {
-    isFunction(options.onTokenExpired) && options.onTokenExpired(keycloak)
-  }
+  keycloak.onTokenExpired = () => {
+    if (isFunction(options.onTokenExpired)) options.onTokenExpired(keycloak);
+  };
 
   keycloak
     .init(options.init)
     .then((authenticated) => {
-      isFunction(options.onInitSuccess) &&
-        options.onInitSuccess(authenticated)
+      if (isFunction(options.onInitSuccess)) options.onInitSuccess(authenticated);
     })
     .catch((error) => {
-      isFunction(options.onInitError)
-        ? options.onInitError(error)
-        : console.error(error)
-    })
+      if (isFunction(options.onInitError)) return options.onInitError(error);
 
-  return keycloak
+      // eslint-disable-next-line no-console
+      return console.error(error);
+    });
+
+  return keycloak;
 }
 
-let installed = false
+let installed = false;
 
-export const Vuecloak = {
+const Vuecloak = {
   install: (app, options) => {
-    if (installed) return
+    if (installed) return;
 
-    installed = true
+    installed = true;
 
-    const keycloak = init(options.config, options)
+    const keycloak = init(options.config, options);
 
-    app.config.globalProperties.$keycloak = keycloak
-    app.provide('$keycloak', keycloak)
+    app.config.globalProperties.$keycloak = keycloak;
+    app.provide('$keycloak', keycloak);
 
-    const IS_DEV = process.env.NODE_ENV === 'development'
-    const IS_CLIENT = typeof window !== 'undefined'
+    const IS_DEV = process.env.NODE_ENV === 'development';
+    const IS_CLIENT = typeof window !== 'undefined';
 
     if (IS_DEV && IS_CLIENT) {
-      devtoolsPlugin(app, keycloak)
+      devtoolsPlugin(app, keycloak);
     }
-  }
-}
+  },
+};
 
+export { Vuecloak };
+export default Vuecloak;

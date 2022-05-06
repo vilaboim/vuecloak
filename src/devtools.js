@@ -1,11 +1,11 @@
-import { setupDevtoolsPlugin } from '@vue/devtools-api'
+import { setupDevtoolsPlugin } from '@vue/devtools-api';
 
-let isAlreadyInstalled = false
-const INSPECTOR_ID = 'vuecloak'
+let isAlreadyInstalled = false;
+const INSPECTOR_ID = 'vuecloak';
 
-export function devtoolsPlugin (app, keycloak) {
-  const keycloakProperties = Object.keys(keycloak).filter(key => typeof keycloak[key] !== 'function')
-  const keycloakMethods = ['loadUserProfile', 'loadUserInfo']
+export default function devtoolsPlugin(app, keycloak) {
+  const keycloakProperties = Object.keys(keycloak).filter((key) => typeof keycloak[key] !== 'function');
+  const keycloakMethods = ['loadUserProfile', 'loadUserInfo'];
 
   setupDevtoolsPlugin(
     {
@@ -21,10 +21,10 @@ export function devtoolsPlugin (app, keycloak) {
           id: INSPECTOR_ID,
           label: 'Vuecloak',
           icon: 'lock',
-          treeFilterPlaceholder: 'Search for property...'
-        })
+          treeFilterPlaceholder: 'Search for property...',
+        });
 
-        api.on.getInspectorTree(payload => {
+        api.on.getInspectorTree((payload) => {
           if (payload.inspectorId === INSPECTOR_ID) {
             const rootNodes = [
               {
@@ -32,10 +32,10 @@ export function devtoolsPlugin (app, keycloak) {
                 label: 'Properties',
                 children: keycloakProperties.map((property) => ({
                   id: property,
-                  label: property
-                }))
-              }
-            ]
+                  label: property,
+                })),
+              },
+            ];
 
             if (keycloak.authenticated) {
               rootNodes.push({
@@ -43,41 +43,41 @@ export function devtoolsPlugin (app, keycloak) {
                 label: 'Methods',
                 children: keycloakMethods.map((property) => ({
                   id: property,
-                  label: property
-                }))
-              })
+                  label: property,
+                })),
+              });
             }
 
-            payload.rootNodes = rootNodes
+            payload.rootNodes = rootNodes;
           }
-        })
+        });
 
         api.on.getInspectorState(async (payload) => {
           if (payload.inspectorId === INSPECTOR_ID) {
-            const nodeId = payload.nodeId
+            const { nodeId } = payload;
 
             if (keycloak.authenticated && keycloakMethods.includes(nodeId)) {
               payload.state = {
                 [nodeId]: {
                   key: nodeId,
                   value: await keycloak[nodeId](),
-                  editable: false
-                }
-              }
+                  editable: false,
+                },
+              };
             } else {
               payload.state = {
                 [nodeId]: {
                   key: nodeId,
                   value: keycloak[nodeId],
-                  editable: false
-                }
-              }
+                  editable: false,
+                },
+              };
             }
           }
-        })
+        });
       }
 
-      isAlreadyInstalled = true
-    }
-  )
+      isAlreadyInstalled = true;
+    },
+  );
 }
