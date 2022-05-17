@@ -7,7 +7,7 @@
   "browser": "dist/vuecloak.umd.js",
   "scripts": {
     "build": "rimraf dist && rollup -c rollup.config.js",
-    "lint": "eslint --ext .js --fix src/",
+    "lint": "tsc && eslint --ext .js,.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -29,11 +29,18 @@
   },
   "homepage": "https://github.com/vilaboim/vuecloak#readme",
   "devDependencies": {
-    "eslint": "^7.32.0 || ^8.2.0",
+    "@rollup/plugin-typescript": "^8.3.2",
+    "@types/node": "^17.0.34",
+    "@typescript-eslint/eslint-plugin": "^5.13.0",
+    "@typescript-eslint/parser": "^5.0.0",
+    "eslint": "^8.15.0",
     "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-airbnb-typescript": "^17.0.0",
     "eslint-plugin-import": "^2.25.2",
     "rimraf": "^3.0.2",
-    "rollup": "^2.52.7"
+    "rollup": "^2.52.7",
+    "tslib": "^2.4.0",
+    "typescript": "^4.6.4"
   },
   "files": [
     "dist"
