@@ -41,7 +41,7 @@ function createOutput(file, format) {
 }
 
 export default {
-  input: 'src/index.js',
+  input: 'src/index.ts',
   output: outputFormats.map((format) => createOutput(outputConfigs[format], format)),
   external: ['keycloak-js', '@vue/devtools-api'],
   plugins: [typescript()],

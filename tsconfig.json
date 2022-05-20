@@ -4,6 +4,8 @@
     "strict": true,
     "target": "ES2015",
     "module": "esnext",
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
     "allowJs": true,
     "sourceMap": true,
     "outDir": "./dist",
