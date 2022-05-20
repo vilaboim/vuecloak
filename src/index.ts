@@ -1,11 +1,13 @@
 import Keycloak from 'keycloak-js';
+import type { KeycloakError } from 'keycloak-js';
+import { IApp, IOptions } from './types';
 import devtoolsPlugin from './devtools';
 
-function isFunction(value) {
+function isFunction(value: Function | undefined) {
   return typeof value === 'function';
 }
 
-function init(config, options) {
+function init(config: IOptions['config'], options: IOptions) {
   const keycloak = Keycloak(config);
 
   keycloak.onReady = () => {
@@ -38,10 +40,10 @@ function init(config, options) {
 
   keycloak
     .init(options.init)
-    .then((authenticated) => {
+    .then((authenticated: boolean) => {
       if (isFunction(options.onInitSuccess)) options.onInitSuccess(authenticated);
     })
-    .catch((error) => {
+    .catch((error: KeycloakError) => {
       if (isFunction(options.onInitError)) return options.onInitError(error);
 
       // eslint-disable-next-line no-console
@@ -54,7 +56,7 @@ function init(config, options) {
 let installed = false;
 
 const Vuecloak = {
-  install: (app, options) => {
+  install: (app: IApp, options: IOptions) => {
     if (installed) return;
 
     installed = true;
