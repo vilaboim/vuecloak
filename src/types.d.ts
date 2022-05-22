@@ -1,3 +1,4 @@
+import type { CustomInspectorState } from '@vue/devtools-api';
 import type {
   KeycloakInitOptions, KeycloakConfig, KeycloakInstance, KeycloakError,
 } from 'keycloak-js';
@@ -34,4 +35,12 @@ export interface IOptions {
   onTokenExpired: (keycloak: KeycloakInstance) => void;
   onInitSuccess: (authenticated: boolean) => void;
   onInitError: (keycloak: KeycloakError) => void;
+}
+
+export interface VuecloakInstance extends KeycloakInstance {
+  [key: string]: any;
+}
+
+export interface VuecloakCustomInspectorState extends CustomInspectorState {
+  [key: string]: any;
 }
