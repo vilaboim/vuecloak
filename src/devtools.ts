@@ -1,11 +1,12 @@
 import { setupDevtoolsPlugin } from '@vue/devtools-api';
+import { IApp, VuecloakInstance, VuecloakCustomInspectorState } from './types';
 
 let isAlreadyInstalled = false;
 const INSPECTOR_ID = 'vuecloak';
 
-export default function devtoolsPlugin(app, keycloak) {
+export default function devtoolsPlugin(app: IApp, keycloak: VuecloakInstance) {
   const keycloakProperties = Object.keys(keycloak).filter((key) => typeof keycloak[key] !== 'function');
-  const keycloakMethods = ['loadUserProfile', 'loadUserInfo'];
+  const keycloakMethods = ['loadUserInfo', 'loadUserProfile'];
 
   setupDevtoolsPlugin(
     {
@@ -56,22 +57,19 @@ export default function devtoolsPlugin(app, keycloak) {
           if (payload.inspectorId === INSPECTOR_ID) {
             const { nodeId } = payload;
 
-            if (keycloak.authenticated && keycloakMethods.includes(nodeId)) {
-              payload.state = {
+            if (keycloak.authenticated) {
+              const state: VuecloakCustomInspectorState = {
                 [nodeId]: {
                   key: nodeId,
-                  value: await keycloak[nodeId](),
                   editable: false,
                 },
               };
-            } else {
-              payload.state = {
-                [nodeId]: {
-                  key: nodeId,
-                  value: keycloak[nodeId],
-                  editable: false,
-                },
-              };
+
+              state[nodeId].value = keycloakMethods.includes(nodeId)
+                ? await keycloak[nodeId]()
+                : keycloak[nodeId];
+
+              payload.state = state;
             }
           }
         });

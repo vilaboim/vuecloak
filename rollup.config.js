@@ -1,44 +1,48 @@
-import pkg from './package.json'
+import typescript from '@rollup/plugin-typescript';
+import pkg from './package.json';
 
-function getAuthors(pkg) {
-  const { contributors, author } = pkg
-  const authors = new Set()
+function getAuthors() {
+  const { contributors, author } = pkg;
+  const authors = new Set();
 
   if (contributors) {
     contributors.forEach((contributor) => {
-      authors.add(contributor.name)
-    })
+      authors.add(contributor.name);
+    });
   }
-  if (author) authors.add(author.name)
+  if (author) authors.add(author.name);
 
-  return Array.from(authors).join(', ')
+  return Array.from(authors).join(', ');
 }
 
 const banner = `/*!
   * ${pkg.name} v${pkg.version}
-  * (c) ${new Date().getFullYear()} ${getAuthors(pkg)}
+  * (c) ${new Date().getFullYear()} ${getAuthors()}
   * @license ${pkg.license}
-  */`
+  */`;
 
-const name = 'vuecloak'
+const name = 'vuecloak';
 const globals = {
-  'keycloak-js': 'Keycloak'
-}
+  'keycloak-js': 'Keycloak',
+};
 
 const outputConfigs = {
   cjs: pkg.main,
   es: pkg.module,
-  umd: pkg.browser
-}
+  umd: pkg.browser,
+};
 
-const outputFormats = Object.keys(outputConfigs)
+const outputFormats = Object.keys(outputConfigs);
 
 function createOutput(file, format) {
-  return { file, format, banner, name, globals }
+  return {
+    file, format, banner, name, globals,
+  };
 }
 
 export default {
-  input: 'src/index.js',
-  output: outputFormats.map(format => createOutput(outputConfigs[format], format)),
-  external: ['keycloak-js', '@vue/devtools-api']
-}
+  input: 'src/index.ts',
+  output: outputFormats.map((format) => createOutput(outputConfigs[format], format)),
+  external: ['keycloak-js', '@vue/devtools-api'],
+  plugins: [typescript()],
+};
