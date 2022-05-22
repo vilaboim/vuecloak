@@ -6,7 +6,7 @@
   "module": "dist/vuecloak.esm-bundler.js",
   "browser": "dist/vuecloak.umd.js",
   "scripts": {
-    "build": "rimraf dist && rollup -c rollup.config.js",
+    "build": "rimraf dist && yarn lint && rollup -c rollup.config.js",
     "lint": "tsc && eslint --ext .js,.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
