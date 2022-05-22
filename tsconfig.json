@@ -12,6 +12,7 @@
     "types": ["node"],
     "noImplicitAny": true,
     "noEmit": true,
+    "noEmitOnError": true
   },
   "include": [
     "src/*",
